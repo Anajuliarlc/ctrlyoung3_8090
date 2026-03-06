@@ -9,6 +9,13 @@
     <script src="scripts/main.js" defer></script>
 </head>
 <body>
+     <!-- Templates -->
+    <template id = "cardTemplate">
+        <div class="flip-card">
+            <div class="flip-card-front"></div>
+            <div class="flip-card-back"><img scr="images/heros/card01.jpeg" alt=""></div>
+        </div>
+    </template>
     <!---menu-->
     <div id ="menu">
         <h1>Memórias do Heroi</h1>
@@ -17,5 +24,7 @@
             <button id="start">começar</button>
         </div>
     </div>
+    <!---tabuleiro-->
+    <div id="board" class="hidden"></div>
 </body>
 </html>

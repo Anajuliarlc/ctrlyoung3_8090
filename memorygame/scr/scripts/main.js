@@ -1,5 +1,3 @@
-
-
 let menu = document.getElementById('menu');
 let select = document.getElementById('numCards');
 let start = document.getElementById('start');
