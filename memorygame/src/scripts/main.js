@@ -2,7 +2,7 @@ function urlBuilder(number){
     number += "";
     number = number.padStart(2, '0');
 
-    return 'images/heros/card${number}.jpeg';
+    return `images/heros/card${number}.jpeg`;
 }
 
 let card = new CardManager(urlBuilder);

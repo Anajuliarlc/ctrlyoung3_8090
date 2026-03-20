@@ -16,7 +16,7 @@ class BoardManager{
 
     fill(numberCards){
         if (numberCards>2*this.numImgs){
-            console.error("Error: Not enough images for ${numberCards} cards.");
+            console.error(`Error: Not enough images for ${numberCards} cards.`);
             numberCards = 2*this.numImgs;
         }
 

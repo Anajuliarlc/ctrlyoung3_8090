@@ -8,7 +8,7 @@ class CardManager{
 
     gen(heroNumber){
         let template = document.getElementById("cardTemplate");
-        let clone = template.content.clodeNode(true);
+        let clone = template.content.cloneNode(true);
 
         let img = clone.querySelector('img');
         
