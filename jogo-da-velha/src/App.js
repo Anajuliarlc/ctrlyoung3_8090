@@ -67,6 +67,18 @@ function App() {
     }
   }
 
+  function reiniciarJogo(){
+    setTabuleiro([
+      null, null, null,
+      null, null, null,
+      null, null, null
+    ])
+
+    setJogadorAtual("X");
+    setVencedor(null);
+    setEmpate(false);
+  }
+
   return (
     <div>
       <h1>Jogo da Velha</h1>
@@ -77,11 +89,14 @@ function App() {
       <p> Vez do Jogador: {jogadorAtual}</p>
       <div className="tabuleiro">
         {tabuleiro.map((valor, indice) => (
-          <button key={indice} onClick={()=> jogar(indice)}>
+          <button key={indice} className="casa" onClick={()=> jogar(indice)}>
             {valor}     
           </button>        
         ))}
       </div>
+      <button onClick={reiniciarJogo}>
+        Reiniciar
+      </button>
     </div>
   );
 }
