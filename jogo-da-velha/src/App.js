@@ -2,15 +2,19 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const[tabuleiro, setTabuleiro] = useState([
+  const[tabuleiroPequenos, setTabuleiroPequenos] = useState([
+    Array(9).fill(null).map(() => Array(9).fill(null))
+  ]);
+
+  const[tabuleiroPrincipal, setTabuleiroPrincipal] = useState([
     null, null, null,
     null, null, null,
     null, null, null,
   ]);
 
   const [jogadorAtual, setJogadorAtual] = useState("X");
-  const [vencedor, setVencedor] = useState(null);
-  const [empate, setEmpate] = useState(false);
+  const [vencedorFinal, setVencedorFinal] = useState(null);
+  //const [empate, setEmpate] = useState(false);
 
   const combinacoesVitoria = [
     [0, 1, 2],
@@ -23,41 +27,54 @@ function App() {
     [2, 4, 6]
   ];
 
-  function verificarVencedor(tabuleiroAtual){
+  function verificarVencedor(tabuleiro){
     for (let combinacao of combinacoesVitoria){
       const [a, b, c] = combinacao;
 
       if (
-        tabuleiroAtual[a] &&
-        tabuleiroAtual[a] === tabuleiroAtual[b] &&
-        tabuleiroAtual[a] === tabuleiroAtual[c])
+        tabuleiro[a] &&
+        tabuleiro[a] === tabuleiro[b] &&
+        tabuleiro[a] === tabuleiro[c])
         {
-          return tabuleiroAtual[a];
+          return tabuleiro[a];
         }
     }
     return null;
   }
 
-  function jogar(indice){
-    if (tabuleiro[indice] !== null || vencedor !== null){
-      return;
-    }
+  function jogar(indiceTabuleiro, indiceCasa){
+    if (vencedorFinal) return;
 
-    const novoTabuleiro = [...tabuleiro];
-    novoTabuleiro[indice] = jogadorAtual;
+    // se esse tabuleiro pequeno já foi ganho
+    if (tabuleiroPrincipal[indiceTabuleiro]) return;
 
-    setTabuleiro(novoTabuleiro);
+    // se a casa já está preenchida
+    if (tabuleiroPequenos[indiceTabuleiro][indiceCasa]) return; 
 
-    const resultado = verificarVencedor(novoTabuleiro)
+    const novosTabuleiros = tabuleiroPequenos.map((tab) => [...tab]);
 
-    if (resultado !== null) {
-      setVencedor(resultado);
-      return;
-    }
+    novosTabuleiros[indiceTabuleiro][indiceCasa] = jogadorAtual;
 
-    if (!novoTabuleiro.includes(null)) {
-      setEmpate(true);
-      return;
+    setTabuleiroPequenos(novosTabuleiros);
+
+    //verifica vitoria no tab pequeno
+    const vencedorPequeno = verificarVencedor(
+      novosTabuleiros[indiceTabuleiro]
+    );
+
+    if (vencedorPequeno){
+      const novoPrincipal = [...tabuleiroPrincipal];
+      novoPrincipal[indiceTabuleiro] = vencedorPequeno;
+
+      setTabuleiroPrincipal(novoPrincipal);
+
+      //verifica vitoria no tabuleiro principal
+      const vencedorJogo = verificarVencedor(novoPrincipal);
+
+      if (vencedorJogo){
+        setVencedorFinal(vencedorJogo);
+        return;
+      }
     }
 
     if (jogadorAtual === "X"){
