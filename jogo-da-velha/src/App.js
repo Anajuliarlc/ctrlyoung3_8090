@@ -85,30 +85,44 @@ function App() {
   }
 
   function reiniciarJogo(){
-    setTabuleiro([
-      null, null, null,
-      null, null, null,
-      null, null, null
-    ])
-
+    setTabuleiroPequenos(
+      Array(9).fill(null).map(() => Array(9).fill(null))
+    );
+    setTabuleiroPrincipal(Array(9).fill(null));
     setJogadorAtual("X");
-    setVencedor(null);
-    setEmpate(false);
+    setVencedorFinal(null);
+    //setEmpate(false);
   }
 
   return (
-    <div>
-      <h1>Jogo da Velha</h1>
+    <div className = "container">
+      <h1>Jogo da Velha 2.0</h1>
 
-      {vencedor && <h2>Vencedor: {vencedor}</h2>}
-      {empate && <h2>Deu velha</h2>}
+       {vencedorFinal ? (
+        <h2>🏆 Vencedor: {vencedorFinal}</h2>
+      ) : (
+        <p>Vez do jogador: {jogadorAtual}</p>
+      )}
 
-      <p> Vez do Jogador: {jogadorAtual}</p>
-      <div className="tabuleiro">
-        {tabuleiro.map((valor, indice) => (
-          <button key={indice} className="casa" onClick={()=> jogar(indice)}>
-            {valor}     
-          </button>        
+      <div className="tabuleiro-principal">
+        {tabuleiroPequenos.map((tabuleiroPequeno, i) => (
+          <div key = {i} className="tabuleiro-pequeno">
+            {tabuleiroPrincipal[i] ? (
+              <div className="vencedor-pequeno">
+                {tabuleiroPrincipal[i]}
+              </div>
+            ) : (
+              tabuleiroPequeno.map((valor, j) => (
+                <button
+                  key={j}
+                  className="casa-pequena"
+                  onClick={() => jogar(i, j)}
+                >
+                  {valor}
+                </button>
+              ))
+            )}
+          </div>
         ))}
       </div>
       <button onClick={reiniciarJogo}>
