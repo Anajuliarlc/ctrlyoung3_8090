@@ -131,7 +131,7 @@ function App() {
        {vencedorFinal ? (
         <h2>🏆 Vencedor: {vencedorFinal}</h2>
         ) : empateFinal ? (
-          <h2>🤝 Empate geral!</h2>
+          <h2>Deu velha!</h2>
         ) : (
           <p>Vez do jogador: {jogadorAtual}</p>
         )}
