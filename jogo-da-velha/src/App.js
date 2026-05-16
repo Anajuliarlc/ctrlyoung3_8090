@@ -14,7 +14,7 @@ function App() {
 
   const [jogadorAtual, setJogadorAtual] = useState("X");
   const [vencedorFinal, setVencedorFinal] = useState(null);
-  //const [empate, setEmpate] = useState(false);
+  const [empateFinal, setEmpateFinal] = useState(false);
 
   const combinacoesVitoria = [
     [0, 1, 2],
@@ -77,6 +77,36 @@ function App() {
       }
     }
 
+    let novoPrincipal = [...tabuleiroPrincipal];
+
+    // empate no tabuleiro pequeno
+    if (!novosTabuleiros[indiceTabuleiro].includes(null) && !vencedorPequeno) {
+      novoPrincipal[indiceTabuleiro] = "E";
+    }
+
+    // vitória no tabuleiro pequeno
+    if (vencedorPequeno) {
+      novoPrincipal[indiceTabuleiro] = vencedorPequeno;
+    }
+
+    setTabuleiroPrincipal(novoPrincipal);
+
+    // verifica vitória geral
+    const vencedorJogo = verificarVencedor(novoPrincipal);
+
+    if (vencedorJogo) {
+      setVencedorFinal(vencedorJogo);
+      return;
+    }
+
+    // verifica empate geral
+    const cheio = novoPrincipal.every(casa => casa !== null);
+
+    if (cheio) {
+      setEmpateFinal(true);
+      return;
+    }
+
     if (jogadorAtual === "X"){
       setJogadorAtual("O");
     } else{
@@ -91,7 +121,7 @@ function App() {
     setTabuleiroPrincipal(Array(9).fill(null));
     setJogadorAtual("X");
     setVencedorFinal(null);
-    //setEmpate(false);
+    setEmpateFinal(false);
   }
 
   return (
@@ -100,9 +130,11 @@ function App() {
 
        {vencedorFinal ? (
         <h2>🏆 Vencedor: {vencedorFinal}</h2>
-      ) : (
-        <p>Vez do jogador: {jogadorAtual}</p>
-      )}
+        ) : empateFinal ? (
+          <h2>🤝 Empate geral!</h2>
+        ) : (
+          <p>Vez do jogador: {jogadorAtual}</p>
+        )}
 
       <div className="tabuleiro-principal">
         {tabuleiroPequenos.map((tabuleiroPequeno, i) => (
